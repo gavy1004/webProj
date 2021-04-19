@@ -7,7 +7,7 @@ formTag.setAttribute('method', 'get');
 var id = document.createTextNode('id');
 var passwd = document.createTextNode('passwd');
 
-//input id,password :
+//input id, password :
 var inputId = document.createElement('input');
 inputId.setAttribute('type', 'text');
 inputId.setAttribute('name', 'id');

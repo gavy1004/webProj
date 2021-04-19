@@ -5,7 +5,7 @@ names.push('석정원');
 names.pop(); // pop 마지막 위치 제거 .석정원삭제
 delete names[0]; // 요소 정보 삭제 . empty 상태
 names.shift(); // 처음 위치제거
-names.unshift('김이담'); // 처음위치 삽입
+names.unshift('김이담'); //  처음위치 삽입
 names.push('김가비');
 names.push('심코코');
 names.push('박보리');

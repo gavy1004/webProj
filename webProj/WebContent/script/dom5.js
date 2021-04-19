@@ -27,7 +27,7 @@ for (var p of persons) {
 }
 
 function showTable() {
-    var tableTag = document.createElement('table'); //테이블 태그
+    var tableTag = document.createElement('table'); // 테이블 태그
     tableTag.setAttribute('border', '1'); //테이블 속성
     for (var person of persons) { // 배열에서 반복
         var tr1 = document.createElement('tr');

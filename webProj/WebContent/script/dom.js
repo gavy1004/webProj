@@ -9,7 +9,7 @@ aTag.appendChild(text);
 console.log(aTag);
 
 // document.body.appendChild(h1Tag);
-// document.body.appendChild(aTag);
+// document.body.appendChild(aTag);;
 
 var show = document.getElementById('show');
 // <div style ='background-color:red;';
