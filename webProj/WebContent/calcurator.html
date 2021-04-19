@@ -15,7 +15,6 @@
             background-color: pink;
             justify-content: space-around;
         }
-
         .container>div {
             background-color: lightgray;
             width: 50px;
@@ -26,11 +25,9 @@
             text-align: center;
             line-height: 50px;
         }
-
         .container>div:hover {
             cursor: pointer;
         }
-
         div#display {
             width: 190px;
             padding-right: 10px;
@@ -68,37 +65,51 @@
         for (var i = 0; i < btns.length; i++) {
             btns[i].onclick = clickEvent;
         }
+
         var firstVal = 0,
             lastVal = 0,
             oper = null;
 
         function clickEvent() {
-            var touchVal = dp.innerHTML;
-            touchVal += this.innerHTML;
-            dp.innerHTML = parseInt(touchVal);
+            var touchVal = this.innerHTML;
+            // dp.innerHTML = parseInt(touchVal);
 
             //연산자를 누르고 = 을 클릭하면 연산이 된다
             //문자인지 숫자 인지 구분
             //isnan = not a number 숫자인지 문자인지 구분 
-            if (isNaN(touchVal)) { //문자(*,/,%,+,=,C)
+            if(isNaN(touchVal)) { //문자(*,/,%,+,=,C)
                 if (touchVal == 'C') {
-                    firstVal = 0,
-                    lastVal = 0,
+                    firstVal = 0;
+                    lastVal = 0;
                     oper = null;
-                } else if (touchVal == '=') {
+                } else if (touchVal != '=') {
                     oper = touchVal;
                 } else {
-                    display = firstVal + lastVal;
+                    if (oper == '+') {
+                        dp.innerHTML = parseInt(firstVal) + parseInt(lastVal);
+                    } else if (oper == '-') {
+                        dp.innerHTML = parseInt(firstVal) - parseInt(lastVal);
+                    } else if (oper == '*') {
+                        dp.innerHTML = parseInt(firstVal) * parseInt(lastVal);
+                    } else if (oper == '/') {
+                        dp.innerHTML = parseInt(firstVal) / parseInt(lastVal);
+                    } else if (oper == '%') {
+                        dp.innerHTML = parseInt(firstVal) % parseInt(lastVal);
+                    }
+                    return; //function에서 return을 만나면 종료.
                 }
             } else { //숫자
-                if (oper == null) {
-                    
+                if (oper) {
+                    //lastVal
+                    lastVal += touchVal;
                 } else {
-
+                    //firstVal
+                    firstVal += touchVal;
                 }
             }
-
+            dp.innerHTML = parseInt(firstVal) + oper + (lastVal ==0 ?'' : parseInt(lastVal));
         }
+
     </script>
 </body>
 
