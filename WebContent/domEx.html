@@ -6,9 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>domEx.html</title>
+    <script>
+    </script>
 </head>
 
 <body>
+    <div>
+        <div>이름:<input type="text" name="name" id='name' value="kim"> </div>
+        <div>아이디:<input type="text" name="id" value="user4"> </div>
+        <div>점수:<input type="text" name="score" id='score' value="80"> </div>
+        <div>성별:<input type="radio" name="gender" value="남">남성
+            <input type="radio" name="gender" value="여">여성
+        </div>
+        <div>
+            <button id ='saveBtn'>저장</button>
+            <button id ='modifyBtn'>수정</button>
+        </div>
+    </div>
+    <hr>
     <table id="tbl" border="1"> </table>
     <script>
         var p1 = {
@@ -35,43 +50,11 @@
             score: 80,
             gender: '여'
         }
-        // for (var field in p3) {
-        //     console.log(field, p3[field]);
-        // }
 
         var persons = [p1, p2, p3, p4];
 
-        // for (var p of persons) {
-        //     console.log(`이름 ${p.name}`);
-        //     console.log(`아이디 ${p.id}`);
-        //     console.log(`점수 ${p.score}`);
-        //     console.log(`성별 ${p.gender}`);
-        // }
 
-         
-        var tbl = document.getElementById('tbl')
-        var btn = document.getElementById('button')
-
-
-        for (var person of persons) {   // for ~ of 배열 반복
-            var tr1 = document.createElement('tr');
-            var btn = document.createElement('button');
-            for (var field in person) { // for ~ in 필드 반복
-                var td1 = document.createElement('td');
-                td1.innerHTML = person[field];
-                btn.innerHTML = '삭제';
-                btn.onclick = function () {
-                    console.log(this.parentNode.remove());
-                }
-                tr1.appendChild(td1);
-                tr1.appendChild(btn);
-            }
-            tbl.appendChild(tr1);
-        }
-         
-    
-
-            
     </script>
 </body>
+
 </html>

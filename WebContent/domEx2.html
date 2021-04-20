@@ -6,10 +6,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>domEx.html</title>
+    <script src="script/dom2Ex.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            createTitle('이름', '아이디', '점수', '성별', '기능');
+            createData();
+
+            var saveBtn = document.getElementById('saveBtn');
+            saveBtn.addEventListener('click', saveBtnFnc);
+
+            var modifyBtn =document.getElementById('modifyBtn');
+            modifyBtn.addEventListener('click', modifyBtnFunc);
+
+            // console.log(iGender.value);
+            // table,tr,td
+
+        });
+
+        // window.onload = function() { // window.onload: 코드를 완전히 다 읽은 후에 fuction()을 실행
+        // var saveBtn = document.getElementById('saveBtn');
+        // console.log(saveBtn);
+    </script>
 </head>
 
 <body>
-    <table id="tbl" border="1"> </table>
+    <div>
+        <div>이름:<input type="text" name="name" id='name' value='Kim'></div>
+        <div>아이디:<input type="text" name="id" id='id' value='user4'></div>
+        <div>점수:<input type="text" name="score" id='score' value='77'></div>
+        <div>성별:<input type="radio" name="gender" value='남' checked>남성
+            <input type="radio" name="gender" value='여'>여성
+        </div>
+        <div>
+            <button id='saveBtn'>저장</button>
+            <button id='modifyBtn'>수정</button>
+        </div>
+    </div>
+    <hr>
+
+    <table id="tbl" border="1"> <caption>회원리스트</caption></table>
+
+   
+
     <script>
         var p1 = {
             name: 'Hong',
@@ -37,54 +76,7 @@
         }
 
         var persons = [p1, p2, p3, p4];
-
-        // table,tr,td
         var tbl = document.getElementById('tbl'); //테이블 읽어옴
-
-        function createTitle() {
-            var trTag = document.createElement('tr');
-            for (var i = 0; i < arguments.length; i++) {
-                var td1 = document.createElement('th');
-                td1.innerHTML = arguments[i];
-                trTag.appendChild(td1);
-            }
-
-            tbl.appendChild(trTag);
-        }
-
-        function createData() {
-            for (var person of persons) {
-                var trTag = document.createElement('tr');
-
-                trTag.onmouseover = function () {
-                    console.log(this.style.backgroundColor = "yellow");
-                }
-                trTag.onmouseout = function () {
-                    console.log(this.style.backgroundColor = '');
-                }
-                
-                for (var field in person) { // for ~ in 필드의 요소 반복
-                    var tdTag = document.createElement('td');
-                    var text = document.createTextNode(person[field]);
-                    trTag.appendChild(tdTag);
-                    tdTag.appendChild(text);
-                }
-
-                var btn = document.createElement('button');
-                btn.innerHTML = '삭제';
-                btn.onclick = function () {
-                    console.log(this.parentNode.parentNode.remove());
-                }
-
-                var tdTag = document.createElement('td');
-                tdTag.appendChild(btn);
-                trTag.appendChild(tdTag);
-
-                tbl.appendChild(trTag);
-            }
-        }
-        createTitle('Name', 'Id', 'Score', 'Gender', '기능');
-        createData();
     </script>
 </body>
 
