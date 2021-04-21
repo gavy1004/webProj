@@ -8,9 +8,9 @@ function createTitle() {
 
     tbl.appendChild(trTag);
 }
-
+//회원리스트에 회원정보를 보여주는 Func
 function createData() {
-    for (var person of persons) {
+    for (var person of persons) { // for ~ of 배열의 반복
         var trTag = document.createElement('tr');
         trTag.setAttribute('id', person.id);
         trTag.onmouseover = mouseOverFnc;
@@ -24,13 +24,12 @@ function createData() {
                 var text = document.createTextNode(person[field]);
                 trTag.appendChild(tdTag);
                 tdTag.appendChild(text);
-            }else if(field == 'name'){
-                var tdTag =document.createElement('td');
+            } else if (field == 'name') {
+                var tdTag = document.createElement('td');
                 var link = document.createElement('a');
-                link.setAttribute('href','dom.jsp?name=Hong&id=user1&score=80&gender=여');
-
-                //('dom.jsp?name='+person.name+'&id='+person.id+'&score='+person.score+'&gender='+person.gender);
-                link.innerHTML= person.name;
+                // link.setAttribute('href', 'dom.jsp?name=Hong&id=user1&score=80&gender=여');
+                link.setAttribute('href', 'dom.jsp?name='+person.name+'&id='+person.id+'&score='+person.score+'&gender='+person.gender);
+                link.innerHTML = person.name;
                 tdTag.appendChild(link);
                 trTag.appendChild(tdTag);
             } else {
@@ -55,6 +54,7 @@ function createData() {
 
 function mouseOverFnc() {
     this.style.backgroundColor = "yellow";
+
 }
 
 function mouseOutFnc() {
@@ -64,14 +64,13 @@ function mouseOutFnc() {
 
 function deleteRow() {
     this.parentNode.parentNode.remove();
+
 }
 
-
 function modifyFunc() {
-
     console.log(this);
     var idVal = this.innerHTML;
-    var nameVal = this.previousSibling.innerHTML;
+    var nameVal = this.previousSibling.firstChild.innerHTML;
     var scoreVal = this.nextSibling.innerHTML;
     var genVal = this.parentNode.childNodes[3].innerHTML;
     console.log(idVal, nameVal, scoreVal, genVal);
@@ -86,6 +85,7 @@ function modifyFunc() {
         }
     }
 }
+
 function saveBtnFnc() {
     var iName = document.getElementById('name');
     var iId = document.querySelector('input[name="id"]');
@@ -128,15 +128,21 @@ function saveBtnFnc() {
     tr.appendChild(td1); // tr에 td1 추가
     tbl.appendChild(tr);
 }
-
+//수정버튼을 클릭했을떄 변경
 function modifyBtnFunc() {
     var id = document.getElementById('id').value;
-    var targetTr = document.getElementById(id);
+    // 사용자가 변경한 값을 반영
+    var name = document.getElementById('name').value;
+    var score = document.getElementById('score').value;
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+   
+    var targetTr = document.getElementById(id); //id로 tr찾아오려고
     console.log(targetTr);
-    targetTr.children[0].innerHTML = document.getElementById('name').value;
-    targetTr.children[2].innerHTML = document.getElementById('score').value;
-    targetTr.children[3].innerHTML = document.querySelector('input[name="gender"]:checked').value;
-    
+    // <a href='dom.js?name=?&id=?&score=?&gender=?'>
+    targetTr.children[0].innerHTML = '<a href="dom.jsp?name='+name+'&id='+id+'&score='+score+'&gender='+gender+'">'+name+'</a>';
+    targetTr.children[2].innerHTML = score;
+    targetTr.children[3].innerHTML = gender;
 
-    
+
+
 }

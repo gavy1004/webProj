@@ -5,20 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>domEx.html</title>
+    <title>domEx2.html</title>
     <script src="script/dom2Ex.js"></script>
-
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 300px;;
+            text-align: center;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             createTitle('이름', '아이디', '점수', '성별', '기능');
             createData();
-
+            //  저장버튼클릭시
             var saveBtn = document.getElementById('saveBtn');
             saveBtn.addEventListener('click', saveBtnFnc);
 
+            //  수정버튼클릭시
             var modifyBtn =document.getElementById('modifyBtn');
             modifyBtn.addEventListener('click', modifyBtnFunc);
-
+            
             // console.log(iGender.value);
             // table,tr,td
 
@@ -32,10 +39,10 @@
 
 <body>
     <div>
-        <div>이름:<input type="text" name="name" id='name' value='Kim'></div>
-        <div>아이디:<input type="text" name="id" id='id' value='user4'></div>
-        <div>점수:<input type="text" name="score" id='score' value='77'></div>
-        <div>성별:<input type="radio" name="gender" value='남' checked>남성
+        <div>이름 : <input type="text" name="name" id='name' value='Kim'></div>
+        <div>아이디 : <input type="text" name="id" id='id' value='user4'></div>
+        <div>점수 : <input type="text" name="score" id='score' value='77'></div>
+        <div>성별 : <input type="radio" name="gender" value='남' checked>남성
             <input type="radio" name="gender" value='여'>여성
         </div>
         <div>

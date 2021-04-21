@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>json.html</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var myObj = {
+            name: "john",
+            age: 31,
+            city: "New York"
+        };
+        //JSON => JavaScript Object Notation.
+        var jsonObj = '{"name": "john","age": "31","city": "New York"}';
+        //JSON => Object
+        var data = JSON.parse(jsonObj); // parse 데이터가 가지고 있는 값 출력하기 편하다
+        //Object => JSON
+        var json = JSON.stringify(data); // 다시 JSON으로 변환
+
+        console.log(json);
+
+        var mockData = // 서버에서 받아온 사원정보
+            '[{"id":1,"first_name":"Eustace","last_name":"Dwyr","email":"edwyr0@princeton.edu","gender":"Bigender","ip_address":"140.175.185.135"},{"id":19,"first_name":"Prudy","last_name":"Pellew","email":"ppellewi@photobucket.com","gender":"Genderqueer","ip_address":"163.132.3.47"},{"id":20,"first_name":"Niles","last_name":"Durak","email":"ndurakj@wordpress.org","gender":"Female","ip_address":"163.126.22.126"}]';
+        var mockObj = JSON.parse(mockData);
+
+        var table = document.createElement('table'); //테이블생성
+        table.setAttribute('border', '1');
+        var cap = document.createElement('caption');
+        cap.innerHTML = '사원리스트';
+        table.appendChild(cap);
+
+        for (var i = 0; i < mockObj.length; i++) {
+            // console.log(mockObj[i].id, mockObj[i].first_name);
+            var tr = document.createElement('tr');
+            for (field in mockObj[i]) { // for ~ in필드 개수 만큼 반복
+                var td = document.createElement('td');
+                var text = document.createTextNode(mockObj[i][field]);
+                td.appendChild(text);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        document.body.appendChild(table);
+        console.log(mockObj);
+    </script>
+</body>
+
+</html>
