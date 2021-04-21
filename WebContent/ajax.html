@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax.html</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        form {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="empList.do" method="POST">
+        LastName : <input type="text" name="last_name" id=""><br>
+        Email : <input type="text" name="email" id=""><br>
+        HireDate : <input type="text" name="hire_date" id=""><br>
+        JobId : <input type="text" name="job_id" id=""><br>
+        <br>
+        <input type="submit" value="저장">
+        <input type="reset" value="취소">
+
+    </form>
+    <div id="show"></div>
+    <script>
+        var xhtp = new XMLHttpRequest();
+        // readyState : 1 => connection. 2 => request receive
+        // 3 => processing request 4 => request finish response ready
+        xhtp.onreadystatechange = function () {
+            // console.log(xhtp.readyState,xhtp.status,xhtp.responseText);
+            if (xhtp.readyState == 4 && xhtp.status == 200) {
+                var show = document.getElementById('show');
+                var obj = JSON.parse(xhtp.responseText);
+                console.log(obj);
+                //table tr td => div.appendChild();
+                var table = document.createElement('table');
+                table.setAttribute('border', '1');
+                var cap = document.createElement('caption');
+                cap.innerHTML= '데이터 다섯개';
+                table.appendChild(cap);
+
+                //배열 갯수 만큼 tr 생성
+                for (var data of obj) {
+                    var tr = document.createElement('tr');
+
+                    // 필드 수 만큼 반복해서 td 생성
+                    for (var field in obj[0]) {
+                        var td = document.createElement('td');
+                        var text = document.createTextNode(data[field]);
+                        td.appendChild(text);
+                        tr.appendChild(td);
+                    }
+
+                    table.appendChild(tr);
+                }
+                // div# show 의 자식으로 table을 닫아준다 
+                document.getElementById('show').appendChild(table);
+
+
+            }
+        }
+        xhtp.open('get', 'empList.do?dept=50');
+        xhtp.send();
+    </script>
+
+</body>
+
+</html>

@@ -15,7 +15,6 @@ public class DBCon {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return conn;
 	}
 }
