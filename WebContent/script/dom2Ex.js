@@ -125,7 +125,8 @@ function saveBtnFnc() {
     buttons.onclick = deleteRow; // button 클릭 시 삭제
 
     td1.appendChild(buttons); // td1에 button 넣어주기
-    tr.appendChild(td1); // tr에 td1 추가
+    tr.appendChild(td1);
+     // tr에 td1 추가
     tbl.appendChild(tr);
 }
 //수정버튼을 클릭했을떄 변경

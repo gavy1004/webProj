@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam01.html</title>
+</head>
+
+<body>
+    <from>
+        이름 : <input type="text" name="name" id ="name"><br>
+        나이 : <input type="text" name="age" id ="age"><br>
+        전화번호 : <input type="text" name="tel" id ="tel"><br>
+        <button id = "saveBtn">등록</button>
+    </from>
+    <script>
+        var btn = document.getElementById('saveBtn');
+
+        btn.onclick = function (){
+            var iName =document.getElementById('name');
+            var iAge =document.getElementById('age');
+            var iTel =document.getElementById('tel');
+            
+            var ary = new Array(iName.value, iAge.value, iTel.value);
+            console.log(ary);
+        }
+
+
+    </script>
+</body>
+
+</html>

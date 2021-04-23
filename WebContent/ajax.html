@@ -10,40 +10,96 @@
         table {
             border-collapse: collapse;
         }
+
         form {
             width: 300px;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var frm = document.getElementById('frm');
+            frm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                console.log(e);
+                var fn = document.getElementById('first_name').value;
+                var ln = document.getElementById('last_name').value;
+                var em = document.getElementById('email').value;
+                var sa = document.getElementById('salary').value;
+                var hd = document.getElementById('hire_date').value;
+                var ji = document.getElementById('job_id').value;
+
+                var data = 'last_name=' + ln + '&email=' + em + '&hire_date=' + hd + '&job_id=' + ji +
+                    '&first_name=' + fn + '&salary=' + sa;
+                var xhtp = new XMLHttpRequest();
+                xhtp.open('post', 'empList.do');
+                xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhtp.send(data);
+
+                xhtp.onreadystatechange = function () {
+                    if (xhtp.readyState == 4 && xhtp.status == 200) {
+                        console.log(xhtp.responseText);
+                        var obj = JSON.parse(xhtp.responseText);
+                        saveBtnFnc(obj);
+                    }
+                }
+            });
+
+        });
+    </script>
 </head>
 
 <body>
-    <form action="empList.do" method="POST">
-        LastName : <input type="text" name="last_name" id=""><br>
-        Email : <input type="text" name="email" id=""><br>
-        HireDate : <input type="text" name="hire_date" id=""><br>
-        JobId : <input type="text" name="job_id" id=""><br>
+    <form id="frm" action="empList.do" method="POST">
+        FirstName : <input type="text" name="first_name" id="first_name"><br>
+        LastName : <input type="text" name="last_name" id="last_name"><br>
+        Email : <input type="text" name="email" id="email"><br>
+        HireDate : <input type="text" name="hire_date" id="hire_date"><br>
+        JobId : <input type="text" name="job_id" id="job_id"><br>
+        salary : <input type="text" name="salary" id="salary"><br>
         <br>
-        <input type="submit" value="저장">
+        <input id='saveBtn' type="submit" value="저장">
         <input type="reset" value="취소">
 
     </form>
     <div id="show"></div>
     <script>
         var xhtp = new XMLHttpRequest();
+        var title = {
+            employee_id: '사원번호',
+            first_name: '이름',
+            last_name: '성씨',
+            email: '이메일',
+            iSalary: '급여',
+            hire_date: '입사일자',
+            job_id: '직무',
+            func: '기능'
+        }
+
+        var table = document.createElement('table');
         // readyState : 1 => connection. 2 => request receive
         // 3 => processing request 4 => request finish response ready
         xhtp.onreadystatechange = function () {
             // console.log(xhtp.readyState,xhtp.status,xhtp.responseText);
             if (xhtp.readyState == 4 && xhtp.status == 200) {
+                console.log('보라' + xhtp.status);
                 var show = document.getElementById('show');
                 var obj = JSON.parse(xhtp.responseText);
                 console.log(obj);
                 //table tr td => div.appendChild();
-                var table = document.createElement('table');
                 table.setAttribute('border', '1');
                 var cap = document.createElement('caption');
-                cap.innerHTML= '데이터 다섯개';
+                cap.innerHTML = '제목입니당';
                 table.appendChild(cap);
+
+                //타이틀 
+                var tr = document.createElement('tr');
+                for (var field in title) {
+                    var td = document.createElement('td');
+                    var text = document.createTextNode(title[field]);
+                    td.appendChild(text);
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
 
                 //배열 갯수 만큼 tr 생성
                 for (var data of obj) {
@@ -57,16 +113,85 @@
                         tr.appendChild(td);
                     }
 
+                    var btn = document.createElement('button');
+                    btn.innerHTML = '삭제';
+                    btn.onclick = deleteRow;
+
+                    var td = document.createElement('td');
+                    td.appendChild(btn);
+                    tr.appendChild(td);
                     table.appendChild(tr);
                 }
+
                 // div# show 의 자식으로 table을 닫아준다 
                 document.getElementById('show').appendChild(table);
-
-
             }
+
         }
+
         xhtp.open('get', 'empList.do?dept=50');
         xhtp.send();
+
+        function saveBtnFnc(obj) {
+
+            console.log(obj);
+            var tr = document.createElement('tr');
+
+            // id
+            var td = document.createElement('td');
+            td.innerHTML = obj.employee_id;
+            tr.appendChild(td);
+
+            // first_name
+            var td = document.createElement('td');
+            td.innerHTML = obj.first_name;
+            tr.appendChild(td);
+
+            // last_name
+            var td = document.createElement('td');
+            td.innerHTML = obj.last_name;
+            tr.appendChild(td);
+
+
+            // email
+            var td = document.createElement('td');
+            td.innerHTML = obj.email;
+            tr.appendChild(td);
+
+
+            // salary
+            var td = document.createElement('td');
+            td.innerHTML = obj.salary;
+            tr.appendChild(td);
+
+            // hire_date
+            var td = document.createElement('td');
+            td.innerHTML = obj.hire_date;
+            tr.appendChild(td);
+
+
+            // jobId
+            var td = document.createElement('td');
+            td.innerHTML = obj.job_id;
+            tr.appendChild(td);
+
+            //button
+            var td1 = document.createElement('td'); // button이 들어갈 새로운 td추가
+            var buttons = document.createElement('button'); // button 생성
+            buttons.innerHTML = "삭제"; // button Label 넣어주기
+
+            buttons.onclick = deleteRow; // button 클릭 시 삭제
+
+            td1.appendChild(buttons); // td1에 button 넣어주기
+            tr.appendChild(td1); // tr에 td1 추가
+
+
+            table.appendChild(tr);
+        }
+
+        function deleteRow() {
+            // this.parentNode.parentNode.remove();
+        }
     </script>
 
 </body>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src='../js/jquery-3.6.0.min.js'></script>
+<style>
+	section#sec1>h1 {
+		background-color: lightcoral;
+	}
+	section.sec1>h1 {
+		background-color: lightcoral;
+	}
+</style>
+<script>
+	$(document).ready(function() {
+		var sec1 =document.getElementById('sec1');
+		sec1 = $('#sec1');
+		console.log(sec1.children().eq(0).html());
+
+		$('#sec1>h1').css('color','pink');
+		$('.sec1>ul').children().eq(0).css('color','darkgray');
+		$('li').eq(0).parents().css('background-color','gray');
+		$('li').eq(0).css('color','darkgray');
+
+
+});
+</script>
+</head>
+<body>
+	<h1>Apple</h1>
+	<section id ='sec1'>
+		<h1>Banana</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>Red</li>
+		</ul>
+	</section>
+	<section class='sec1'>
+		<h1>Cherry</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>Red</li>
+		</ul>
+	</section>
+	
+</body>
+</html>

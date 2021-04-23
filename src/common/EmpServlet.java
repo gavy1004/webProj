@@ -38,6 +38,8 @@ public class EmpServlet extends HttpServlet {
 					+ "\", \"lname\":\"" + emp.getLastName() //
 					+ "\", \"email\":\"" + emp.getEmail() //
 					+ "\", \"salary\":\"" + emp.getSalary() //
+					+ "\", \"hireDate\":\"" + emp.getHireDate() //
+					+ "\", \"jobId\":\"" + emp.getJobId() //
 					+ "\"}");
 			if (++cnt == list.size()) {
 				continue;
@@ -47,24 +49,40 @@ public class EmpServlet extends HttpServlet {
 		jsonData += "]";
 		out.println(jsonData);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String firstName = req.getParameter("first_name");
 		String lastName = req.getParameter("last_name");
 		String email = req.getParameter("email");
+		String salary = req.getParameter("salary");
 		String hireDate = req.getParameter("hire_date");
 		String jodId = req.getParameter("job_id");
 		
-		Employee emp =  new Employee();
+		int sal = Integer.parseInt(salary);
+		
+		Employee emp = new Employee();
+		emp.setFirstName(firstName);
 		emp.setLastName(lastName);
 		emp.setEmail(email);
+		emp.setSalary(sal);
 		emp.setHireDate(hireDate);
 		emp.setJobId(jodId);
-		
+
 		EmpDAO dao = new EmpDAO();
-		dao.insertEmp(emp);
-		
-		resp.getWriter().print("<h1>Success</h1>");
+		Employee empl = dao.insertEmpBySeq(emp);
+		// {"eid":"?","fname":"?","lname":"?"...........}
+
+		PrintWriter out = resp.getWriter();
+		out.println("{\"employee_id\":\"" + empl.getEmployeeId() + "\","//
+				+ "\"first_name\":\"" + empl.getFirstName() + "\","//
+				+ "\"last_name\":\"" + empl.getLastName() + "\","//
+				+ "\"email\":\"" + empl.getEmail() + "\","//
+				+ "\"hire_date\":\"" + empl.getHireDate() + "\","//
+				+ "\"salary\":\"" + empl.getSalary() + "\","//
+				+ "\"job_id\":\"" + empl.getJobId() + "\""//
+				+ "}");
+
 	}
-	
+
 }
