@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ajax_jquery.html</title>
-<script src='js/query-3.6.0.min.js'></script>
+<script src='../js/jquery-3.6.0.min.js'></script>
 <style>
 table {
 	border-collapse: collapse;
@@ -40,17 +40,18 @@ form {
                 	success: function(result) {
                 		console.log(result);
                         var obj = JSON.parse(result);
-                        var trTag = $('<tr/>');
+                        var tr = $('<tr/>');
+                       
                         for(var field in obj){
-                        	var tdTag = $('<td />').html(obj[field]);
-                        	trTag.append(tdTag);
+                        	var td = $('<td />').html(obj[field]);
+                        	tr.append(td);
                         }
                         var td= $('<td />');
                         var btn = $('<button />').html('삭제');
                         
                         td.append(btn);
-                        trTag.append(td);
-                        table.append(trTag);
+                        tr.append(td);
+                        table.append(tr);
                         //saveBtnFnc(obj);
                 	},
                 	error: function(reject) {
@@ -58,7 +59,7 @@ form {
                 	}
                 });
                 
-             });	//end of frm.submit();
+             });	
         });		//end of document.event();
     </script>
 </head>

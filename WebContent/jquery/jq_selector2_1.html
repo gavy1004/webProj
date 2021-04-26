@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='../js/jquery-3.6.0.min.js'></script>
+    <title>jq_selector2_1.html</title>
+    <style>
+        ul {
+            width: 500px;
+        }
+    </style>
+    <script>
+        $(function(){
+            $("li").slice(1,3).eq(0).css({"background-color":"lightcoral"});
+            //$("#menu li:last").css({"background-color":"pink"});
+        })
+    </script>
+</head>
+<body>
+ <h1>탐색 선택자</h1>
+ <ul id ='menu'>
+     <li>내용1</li>
+    
+     <li>내용2</li>
+     <li>내용3</li>
+     <li>내용4</li>
+ </ul>
+ <ul>
+     <li>dd</li>
+ </ul>
+    
+ <ul >
+    <li>내용1</li>
+    <li>내용2</li>
+    <li>내용3</li>
+    <li>내용4</li>
+</ul>
+</body>
+</html>

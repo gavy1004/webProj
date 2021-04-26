@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_select2_13.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $("#inner_1 p:contains(내용1)").css({
+                "background-color": "#ff0"
+            });
+            //p요소중 내용1을 포함하는(contains) 요소만 
+            $("#inner_1 p:has(strong)").css({
+                "background-color": "#0ff"
+            });
+            //p요소중 strong 요소를 포함하는(has) 
+            $("#outer_wrap").contents().css({
+                "border": "1px dashed #00f"
+            });
+            // id 값이 outer_wrap 인 요소의 하위 텍스트와 태그 노드
+            $("#inner_2 p").not(":first").css({
+                "background-color": "#0f0"
+            });
+            // id 값이 inner_2 의 p 태그에서 첫번째 요소만 제외하고 (not)
+            $("#inner_2 p").eq(2).end().css({
+                "color": "#f00"
+            });
+            // if 값이 inner_2 의 p 태그에서 인덱스가2인 요소를 선택 그러나 다시 end 메서드를 적용해서
+            //인덱스를 선택하기 전에 선택자가 적용된다
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="outer_wrap">
+        <h1>콘텐츠 탐색 선택자</h1>
+        <section id="inner_1">
+            <h1>contains(), contents(), has()</h1>
+            <p>
+                <span>내용1</span>
+            </p>
+            <p>
+                <strong>내용2</strong>
+            </p>
+            <p>
+                <span>내용3</span>
+            </p>
+        </section>
+        <section id="inner_2">
+            <h1>not(), end()</h1>
+            <p>내용4</p>
+            <p>내용5</p>
+            <p>내용6</p>
+        </section>
+    </div>
+</body>
+
+</html>

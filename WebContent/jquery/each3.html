@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery.each3.html</title>
+    <script src='../js/jquery-3.6.0.min.js'></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            background-color: pink;
+        }
+    </style>
+    <script>
+        $(document).ready(function () { // document가 준비가 되면 실행
+            $.ajax({
+                url: '../Mock_DATA.json',
+                dataType: 'json',
+                success: successCallFunc,
+                error: errorCallFnc
+            }) // XMLhttpRequest(); 비동기방식처리
+        });
+
+        function successCallFunc(resolve) { // 비동기 방식 ajax)'../Mock_DATA.json' 의 실행결과 
+            console.log(resolve);
+            let tbl = $('<table />');
+            tbl.attr('border', '1');
+            $.each(resolve, function (i, o) { // i= index값 , o= 배열에 들어있는 값(object)
+                let trTag = $('<tr />'); // row 생성.
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseoverFnc);
+                trTag.mouseout(mouseoutFnc);
+                let btn = $('<button />').html('Del').click();
+                btn.attr('background-color','')
+                btn.click((evnt) => {
+                        console.log($(this),evnt);
+                        // $(this) => function: event 대상, arrow fnc: object
+                        evnt.currentTarget.parentNode.parentNode.remove();
+                });
+                trTag.append(
+                    $('<td />').html(o.id), //
+                    $('<td />').html(o.first_name), //
+                    $('<td />').html(o.last_name), //
+                    $('<td />').html(o.email), //
+                   $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+            $('#show').append(tbl); // <p>1</p><p>2</p>...<p>20</p>
+        }
+
+        function errorCallFnc(reject){
+            console.log(reject);
+        }
+
+        function mouseoverFnc(){
+            $(this).css('background-color','lightcoral')
+        }
+
+        function mouseoutFnc(){
+            $(this).css('background-color','')
+        }
+        
+        function clickFnc() {
+            alert($(this).attr('id'));
+        }
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+
+</body>
+
+</html>
