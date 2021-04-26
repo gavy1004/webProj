@@ -6,18 +6,19 @@
 <script src="../js/jquery-3.6.0.min.js"></script>
 <script>
 	$(function() {
-		$("#wrap p:hidden").css({	//선택한 <p>요소중 숨겨진 상태의 요소만 선택
+		
+		$("#wrap p:hidden").css({
 			"display" : "block",
 			"background" : "#ff0"
 		});
 		
-		var z1 = $("#zone1 :selected").val();	//opt2
+		var z1 = $("#zone1 :selected").val();
 		console.log(z1);
 		
-		var z2 = $("#zone2 :checked").val();	//등산
+		var z2 = $("#zone2 :checked").val();
 		console.log(z2);
 		
-		var z3 = $("#zone3 :checked").val();	//자전거
+		var z3 = $("#zone3 :ckecked").val();
 		console.log(z3);
 
 	});
