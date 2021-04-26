@@ -8,23 +8,8 @@
     <title>exam03.html</title>
     <script src='../js/jquery-3.6.0.min.js'></script>
     <script>
-        $(document).ready(function (){
-            $.ajax({
-                url :'../dataset.xml',
-                dataType:'xml',
-                success: successCallFnc,
-                erroe: errorCallFnc
-            })
-        });
-        function successCallFnc(resolve){
-            let ulTag=$('<ul />');
-            $.each(resolve, function(i, o){
-                console.log(o.first_name)
-            });
-        }
-        function errorCallFnc(reject){
 
-        }
+
     </script>
 </head>
 
