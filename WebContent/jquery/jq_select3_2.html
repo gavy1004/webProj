@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		let srcVal = $('#sec_1 img').attr('src');
+		console.log(srcVal);
+
+		$('#sec_1 img').attr({
+			'width' : '200px',
+			'src' : srcVal.replace('1.png', '2.png'),
+			'alt' : '바위'
+		}).removeAttr('border');
+		$('#p1').addClass('aqua');
+	});
+</script>
+</head>
+<body>
+	<p id="p1">내용1</p>
+	<section id="sec_1">
+		<p>
+			<img src="../images/1.png" alt="가위" border="2">
+		</p>
+	</section>
+</body>
+</html>

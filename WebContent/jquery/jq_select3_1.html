@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체 조작 메소드</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		// html 태그는 html 태그 적용해서 사용가능 
+		//let Hello = $('p').html('<a href ="#">Hello</a>');
+		let Hello = $('p').text();
+		let id =$('input[type="text"]').val('name');
+		console.log(id);
+		
+	});
+</script>
+</head>
+<body>
+	<p><span>Hello</span></p>
+	<input type="text" name ="id" value="world">
+	<!-- 값을 읽어 올떄 사용하는 메서드 val -->
+</body>
+</html>

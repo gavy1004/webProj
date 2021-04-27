@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function(){
+		$("#wrap p:eq(2)").after("<p>After</p>");	
+		$("<p>insertAfter</p>").insertAfter("#wrap p:eq(1)");	
+		$("#wrap p:eq(1)").before("<p>Before</p>");		
+		$("<p>insertBefore</p>").insertBefore("#wrap p:eq(0)");
+		
+		$("<li>appendTo</li>").appendTo("#listZone");
+		$("#listZone").prepend("<li>prepend</li>");
+		
+		//$("#wrap").prepend("<p>After</p>");	// 맨 앞에 
+		//$('<p>ApprendTo</p>').appendTo('#wrap');	//선택한 요소의 마지막 위치
+	});
+
+</script>
+</head>
+<body>
+	<div id="wrap">
+		<p>내용1</p>
+		<p>내용2</p>
+		<p>내용3</p>
+	</div>
+	<ul id="listZone">
+		<li>리스트</li>
+	</ul>
+</body>
+</html>

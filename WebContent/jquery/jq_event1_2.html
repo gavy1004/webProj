@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_event1_2.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<style>
+.content {
+	background-color: yellow;
+}
+
+span {
+	display: block;
+	width: 50vw;
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+	<p>
+		<button class="btn1">클릭1</button>
+	</p>
+	<p>내용1</p>
+	<p>
+		<button class="btn2">클릭2</button>
+	</p>
+	<p>내용2</p>
+
+	<input type="text" name="firstName" value="Kildong">
+	<input type="number" name="age" value=10>
+	<button id="btn3">추가</button>
+	<p id="show"></p>
+
+	<script>
+		$('#btn3').click(function() {
+			//let fname = $('input:eq(0)')
+			let fname = $('input[type="text"]').val();
+			let age = $('input[type="number"]').val();
+			let btn = $('<button />').html('Del');
+			
+			let scolor = $('<span />').html(fname + age);
+			
+			console.log(scolor);
+			btn.click(function() {
+				$(this).parent().remove();
+			});
+
+			
+			$('p#show').append($('<div />').append(scolor).append(btn));
+
+			$(scolor).on({
+				mouseover : function() {
+					$(this).css({
+						'background-color' : 'aqua'
+					});
+				},
+				mouseout : function() {
+					$(this).css({
+						'background-color' : ''
+					});
+
+				}
+			});
+		});
+
+		$('.btn1').click(function() {
+			$('p:contains(내용1)').html("Hello");
+		});
+
+		$('.btn2').on(
+				//on으로 등록하고 싶은 이벤트와 기능
+				'click',
+				function() {
+					$(this).parent().next().css('color', 'red').attr('id',
+							'content2').addClass('content');
+				});
+
+		$('p:eq(1)').on({
+			mouseover : function() {
+				$(this).css({
+					'background-color' : 'aqua',
+					'font-size' : '30px'
+				})
+			},
+			mouseout : function() {
+				$(this).css({
+					'background-color' : '',
+					'font-size' : '15px'
+				})
+			}
+		})
+	</script>
+</body>
+</html>
