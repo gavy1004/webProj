@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>j1_ajax4.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$.ajax({
+			url : '../ajax.html',
+			type : 'post',	// post
+			data : 'p1=hello&p2=nice',	// 전송할 데이터
+			dataType : 'html',	// defult html
+			success : function(resolve){
+				console.log(resolve);
+			},
+			error : function(reject){
+				window:alert(reject.statusText);
+				console.log(`에러코드: ${reject.status}, 에러페이지: ${reject.statusText}`);
+			}
+		});
+	})
+</script>
+</head>
+<body>
+	<!-- form 태그 값을 넘기는 기능  -->
+	<form action='MemberServlet.do' method='post'>
+		ID : <input type="number" name="m_id" id="m_id" value=1><br>
+		이름 : <input type="text" name="m_name" id="m_name" value='Hong'><br>
+		나이 : <input type="number" name="m_age" id="m_age" value=20><br>
+		<input type="submit" value="저장">
+	</form>
+	<div id="show"></div>	
+</body>
+</html>

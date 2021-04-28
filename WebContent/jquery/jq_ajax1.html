@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax1.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		$("#show").load('jq_selec1_10.html div#wrap', 
+							function(a, b, c){
+								console.log(a, b, c);
+							}
+		);	//외부 컨텐츠를 가져올떄 사용
+		
+		//.load( url [, data ] [, complete ] ) []안에 들어있는것은 옵션 
+	})
+</script>
+</head>
+<body>
+	<div id="show"></div>
+</body>
+</html>

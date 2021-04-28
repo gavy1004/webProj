@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>j1_ajax3.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$.post('../ajax.html', function(data) {
+			console.log(data);
+		}, 'html');
+	})
+</script>
+</head>
+<body>
+	<div id="show"></div>
+</body>
+</html>
