@@ -51,10 +51,11 @@
 					}
 
 					let $table = $('<table id="tbl" />').attr('border', '1');
-					// 타이틀
 					let $tr = $('<tr />');
+					// 타이틀
 					for (var field in title) {
 						let $th = $("<td />").html(title[field]);
+						$th.attr("background-color,yellow");
 						$tr.append($th);
 					}
 					$table.append($tr)
@@ -70,10 +71,23 @@
 							$('<td />').html(resolve[i].age),
 							$('<td />').append(delBtn)
 						)
-
+						$($tr).on({
+							mouseover: function () {
+								$(this).css({
+									"background-color" : "lightcoral"
+								});
+							},
+							mouseout : function() {
+								$(this).css({
+									"background-color" : ""
+								});
+							}
+						});
 						$table.append($tr);
 					}
 					$("#show").append($table);
+
+
 				};
 
 				function createRow(data) {
@@ -81,7 +95,7 @@
 					console.log(data);
 					let delBtn = $('<button />').html('Del');
 					delBtn.click(deleteRow);
-					
+
 					let $tr = $('<tr />').append(
 						$('<td />').html(data.id),
 						$('<td />').html(data.name),
@@ -90,9 +104,10 @@
 					);
 
 					$('#tbl').append($tr);
-					
+
 				}
 
+				
 				function deleteRow() {
 					console.log(this); //this = button TAg
 					let id = $(this).parent().parent().children().eq(0).html();
@@ -100,12 +115,12 @@
 					//db 삭세
 					$.ajax({
 						url: '../MemberDelServlet',
-						data: 'mid='+id,
+						data: 'mid=' + id,
 						success: function () {
 							console.log('삭제후 처리');
 							//화면 삭제
 							delTr.remove();
-							
+
 						},
 						error: function (err) {
 							console.log(err);
@@ -113,7 +128,7 @@
 					});
 
 				}
-			
+
 			});
 	</script>
 </head>

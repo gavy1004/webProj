@@ -8,6 +8,17 @@ public class Employee {
 	private String hireDate;
 	private String jobId;
 	private int salary;
+	private String phoneNumber;
+	
+	
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
 	public String getHireDate() {
 		return hireDate;
