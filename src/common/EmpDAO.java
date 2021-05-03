@@ -15,7 +15,32 @@ public class EmpDAO {
 	Statement stmt;
 	ResultSet rs;
 	PreparedStatement psmt;
-
+	
+	//resource해제
+	public void close() {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (psmt != null) {
+			try {
+				psmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	public Employee insertEmpBySeq(Employee emp) {
 		conn = DBCon.getConnect();
 		Employee empl = new Employee();
@@ -51,7 +76,7 @@ public class EmpDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-
+			close();
 		}
 		return empl; // 여기서 시작
 	}
@@ -70,25 +95,9 @@ public class EmpDAO {
 			int r = psmt.executeUpdate(); // 쿼리 하는 건수 업데이트
 			System.out.println(r + "건 입력됨");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 
 	}
@@ -119,27 +128,7 @@ public class EmpDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 
 		return employees;
@@ -171,27 +160,7 @@ public class EmpDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 
 		return employees;
@@ -224,27 +193,7 @@ public class EmpDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 
 		return employees;
@@ -271,29 +220,55 @@ public class EmpDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 		return map;
 	}
+	
+	// google calendar
+	// 스케쥴 정보를 가지고 오는 메소드.. 5.3 
+	public List<ScheduleVO> getScheduleList() {
+		conn = DBCon.getConnect();
+		
+		String sql = "select * from schedule";
+		List<ScheduleVO> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				vo.setTitle(rs.getString("title"));
+				vo.setStartDay(rs.getString("start_day"));
+				vo.setEndDay(rs.getString("end_day"));
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return list;
+	}
+	
+	// 스케쥴정보를 db에 입력하는 작업
+	public void insertSchedule(ScheduleVO vo) {
+		String sql = "insert into schedule values(?,?,?)";
+		conn = DBCon.getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getTitle());
+			psmt.setString(2, vo.getStartDay());
+			psmt.setString(3, vo.getEndDay());
+			
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 입력되었습니다");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+	}
+	
 
 }
