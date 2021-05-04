@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>jquery/upload2.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<style>
+#img {
+	height: 220px;
+	width: 180px;
+}
+table {
+	margin : 100px;
+}
+</style>
+<script>
+		$(document).ready(function () {
+			// db에 데이터를 화면에 출력 <div id="show"><table> </table></div>
+			$.ajax({
+				url: '../getFileListServlet',	//요청하는페이지
+				dataType: 'json',	//json -> object
+				success: function(result) {
+					console.log(result);
+					let title = {
+							num:'번호',
+							author:'작가',
+							title: '제목',
+							fileName: '파일명',
+							day: '날짜'
+						}
+					let $table = $('<table />');
+					$($table).attr('border','1');
+					let $tr = $('<tr />');
+					// 타이틀
+					for(let field in title) {
+						let $th = $("<td />").html(title[field]);
+						$th.attr("background-color,yellow");
+						$tr.append($th);
+					}
+					$table.append($tr)
+					// 테이블 데이터 부분
+					 for(let i = 0; i< result.length; i++){
+					 	let $tr = $('<tr />').append(
+							$('<td />').html(result[i].num),
+							$('<td />').html(result[i].author),
+							$('<td />').html(result[i].title),
+							$('<td />').html(result[i].day),
+							$('<td />').html(result[i].fileName)
+					)
+					$table.append($tr);
+			
+					 }$('#show').append($table);
+					
+				},
+				error: function(err) {
+					console.log(err);
+				}
+			})
+			$("#filename").change(function () {
+				// file이 선택한 이미지 값 -> img 난다
+				for(let file of this.files){
+					$('#img').attr('src',URL.createObjectURL(file));
+				}
+			});
+			
+			// 전송을 누르면...
+			$('#frm').submit(function(e){
+				e.preventDefault();	// 새로고침X
+				let frm = document.getElementById('frm');
+				let data = new FormData(frm);	//frm으로 새로운 데이터객체를 만든다 form의 key/value로 채워진다
+				for(let k of data.entries()) {	// data(object)가 ["num", ""]로 쌍에 해당하는 배열을 반환
+					console.log(k);				
+				}
+				// 비동기 호출 파일업로드서블릿..
+				$.ajax({
+					contentType: false,
+					processData: false,
+					url: $('#frm').attr('action'),
+					type: 'post',
+					dataType: 'json',
+					data: data,
+					success: function(result) {
+						console.log(result);
+					},
+					error: function(err) {
+						console.log(err);
+					}
+				});	
+			});
+			
+		});
+	</script>
+</head>
+
+<body>
+	<h1>Ajax 파일 업로드</h1>
+	<form id='frm' action='../fileUploadServlet' method='post'
+		enctype='multipart/form-data'>
+		<div id="show"></div>
+		<table border="1">
+			<tr>
+				<td><label for="num">번호</label></td>
+				<td><input type="text" name="num" id="num"></td>
+				<td rowspan="4"><img src="" alt="선택한파일." id="img"></td>
+			</tr>
+			<tr>
+				<td><label for="author">저자</label></td>
+				<td><input type="text" name="author" id="author"></td>
+			</tr>
+			<tr>
+				<td><label for="title">제목</label></td>
+				<td><input type="text" name="title" id="title"></td>
+			</tr>
+			<tr>
+				<td><label for="filename">파일첨부</label></td>
+				<td><input type="file" name="filename" id="filename"></td>
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit"><input
+					type="reset"></td>
+			</tr>
+		</table>
+
+	</form>
+</body>
+
+</html>
