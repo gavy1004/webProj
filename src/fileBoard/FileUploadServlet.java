@@ -61,10 +61,10 @@ public class FileUploadServlet extends HttpServlet {
 		// 가져온 값을 json형식으로 생성 {"num" : ?,"author" : ?, "title" : ? }
 		JSONObject obj = new JSONObject();
 		obj.put("num", rvo.getNum());
-		obj.put("author", rvo.getAuthor());
 		obj.put("title", rvo.getTitle());
-		obj.put("day", rvo.getDay());
+		obj.put("author", rvo.getAuthor());
 		obj.put("fileName", rvo.getFilename());
+		obj.put("day", rvo.getDay());
 
 		response.getWriter().print(obj);
 	}

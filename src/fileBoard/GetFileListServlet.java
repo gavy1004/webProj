@@ -17,7 +17,7 @@ public class GetFileListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     public GetFileListServlet() {
-        super();
+    	super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

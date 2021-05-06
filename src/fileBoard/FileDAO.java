@@ -13,6 +13,97 @@ public class FileDAO {
 	Connection conn;
 	PreparedStatement psmt;
 	ResultSet rs;
+	
+	public void updateFile(FileVO vo) {
+		/*
+		 * Connection conn = DBCon.getConnect(); PreparedStatement psmt = null; String
+		 * sql ="update FILE_BOARD\r\n" + "set author = ?, title= ?, file_name=? \r\n" +
+		 * " where num=?;";
+		 * 
+		 * try { psmt = conn.prepareStatement(sql); psmt.setString(1, );
+		 * psmt.setString(2, ); psmt.setString(3, ); psmt.setInt(4, num); int r
+		 * =psmt.executeUpdate(); System.out.println(r +"건 수정.");
+		 * 
+		 * } catch (SQLException e) { e.printStackTrace(); } finally { if (psmt != null)
+		 * { try { psmt.close(); } catch (SQLException e) { e.printStackTrace(); } } if
+		 * (conn != null) { try { conn.close(); } catch (SQLException e) {
+		 * e.printStackTrace(); } } }
+		 */
+	}
+	public void delFile(int num) {
+		Connection conn = DBCon.getConnect();
+		PreparedStatement psmt = null;
+		String sql ="delete from file_board where num=?";
+				
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, num);
+			int r =psmt.executeUpdate();
+			System.out.println(r +"건 삭제.");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
+	public FileVO getFile(int num) { // num 값으로 한건조회
+		conn = DBCon.getConnect();
+		String sql = "select * from file_board where num=?";
+		FileVO file = new FileVO();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,num);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				file.setAuthor(rs.getString("author"));
+				file.setDay(rs.getString("day"));
+				file.setFilename(rs.getString("file_name"));
+				file.setNum(rs.getInt("num"));
+				file.setTitle(rs.getString("title"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return file;
+	}
 
 	public List<FileVO> getFileList() {
 		conn = DBCon.getConnect();

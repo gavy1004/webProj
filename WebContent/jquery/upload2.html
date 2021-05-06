@@ -2,75 +2,150 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>jquery/upload2.html</title>
-<script src="../js/jquery-3.6.0.min.js"></script>
-<style>
-#img {
-	height: 220px;
-	width: 180px;
-}
-table {
-	margin : 100px;
-}
-</style>
-<script>
+	<meta charset="UTF-8">
+	<title>jquery/upload2.html</title>
+	<script src="../js/jquery-3.6.0.min.js"></script>
+	<style>
+		#img {
+			height: 220px;
+			width: 180px;
+		}
+
+		table {
+			margin-bottom: 20px;
+			border-collapse: collapse;
+		}
+	</style>
+	<script>
 		$(document).ready(function () {
+			let $table = $('<table />').attr('border', '1');
+			let $tr = $('<tr />');
 			// db에 데이터를 화면에 출력 <div id="show"><table> </table></div>
 			$.ajax({
-				url: '../getFileListServlet',	//요청하는페이지
-				dataType: 'json',	//json -> object
-				success: function(result) {
+				url: '../getFileListServlet', //요청하는페이지
+				dataType: 'json', //json -> object
+				success: function (result) {
 					console.log(result);
-					let title = {
-							num:'번호',
-							author:'작가',
-							title: '제목',
-							fileName: '파일명',
-							day: '날짜'
-						}
-					let $table = $('<table />');
-					$($table).attr('border','1');
-					let $tr = $('<tr />');
-					// 타이틀
-					for(let field in title) {
-						let $th = $("<td />").html(title[field]);
-						$th.attr("background-color,yellow");
-						$tr.append($th);
-					}
-					$table.append($tr)
+
+					$table.append(getTitle());
 					// 테이블 데이터 부분
-					 for(let i = 0; i< result.length; i++){
-					 	let $tr = $('<tr />').append(
-							$('<td />').html(result[i].num),
-							$('<td />').html(result[i].author),
-							$('<td />').html(result[i].title),
-							$('<td />').html(result[i].day),
-							$('<td />').html(result[i].fileName)
-					)
-					$table.append($tr);
-			
-					 }$('#show').append($table);
-					
+					for (let obj of result) {
+						let $tr = $('<tr />');
+						let alink = $('<a />').attr('href', '#').html(obj.title); // 링크클릭시 화면에 데이터
+						let $delBtn = $('<button />').html('Del');
+						$delBtn.click(delRow);
+						alink.click(linkClickCallBack);
+						$tr.click(function () {
+							console.log('tr클릭');
+						})
+						$tr.on({
+							mouseover: function () {
+								$(this).css({
+									'background-color': 'lightcoral'
+								});
+							},
+							mouseout: function () {
+								$(this).css({
+									'background-color': ''
+								});
+							}
+						});
+
+						$tr.append(
+							$('<td />').html(obj.num),
+							$('<td />').append(alink),
+							$('<td />').html(obj.author),
+							$('<td />').html(obj.fileName),
+							$('<td />').html(obj.day),
+							$('<td />').append($delBtn)
+						)
+						$table.append($tr);
+					}
+					$('#show').append($table);
 				},
-				error: function(err) {
+
+				error: function (err) {
 					console.log(err);
 				}
 			})
+
+			// linkTag click callback
+			function linkClickCallBack(e) {
+				console.log('a클릭', $(this).parentsUntil('table').eq(0).children().eq(0).html());
+				let num = $(this).parent().parent().children().eq().html();
+				num = $(this) // a태그
+					.parent() // td태그
+					.prev() // <td>num<td/> 
+					.html(); // num
+				e.preventDefault(); // default 기능 차단
+				e.stopPropagation(); // 이벤트 전파 차단
+				$.ajax({
+					url: '../getFileServlet', // 호출할 페이지(servlet)
+					data: 'num=' + num,
+					dataType: 'json',
+					type: 'get',
+					success: function (result) {
+						console.log(result);
+						// 화면에 가져온 정보를 보여주도록
+						$('#num').val(result.num);
+						$('#author').val(result.author);
+						$('#title').val(result.title);
+						$('#img').attr('src', '../upload/' + result.fileName);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
+
+			// delete 
+			function delRow(e) {
+				let id = $(this).parent().parent().children().eq(0).html();
+				let delTr = $(this).parent().parent();
+				e.preventDefault(); // default 기능 차단
+				e.stopPropagation(); // 이벤트 전파 차단
+				$.ajax({
+					url: '../fileDelServlet',
+					data: 'num=' + id,
+					success: function () {
+						//화면삭제
+						delTr.remove();
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			}
+
+			// table title 
+			function getTitle() {
+				let $title = $('<tr />');
+				$title.css('background-color', 'pink');
+				$title.append(
+					$('<th />').html('번호'),
+					$('<th />').html('제목'),
+					$('<th />').html('저자'),
+					$('<th />').html('파일명'),
+					$('<th />').html('날짜'),
+					$('<th />').html('삭제')
+				);
+				return $title;
+			}
+
+			// file이 선택한 이미지 값 -> img 나온다
 			$("#filename").change(function () {
-				// file이 선택한 이미지 값 -> img 난다
-				for(let file of this.files){
-					$('#img').attr('src',URL.createObjectURL(file));
+				for (let file of this.files) {
+					$('#img').attr('src', URL.createObjectURL(file));
 				}
 			});
-			
-			// 전송을 누르면...
-			$('#frm').submit(function(e){
-				e.preventDefault();	// 새로고침X
+
+			// submit -> imege 불러와서 화면에 보여준다
+			$('#frm').submit(function (e) {
+				e.preventDefault(); // 새로고침X
 				let frm = document.getElementById('frm');
-				let data = new FormData(frm);	//frm으로 새로운 데이터객체를 만든다 form의 key/value로 채워진다
-				for(let k of data.entries()) {	// data(object)가 ["num", ""]로 쌍에 해당하는 배열을 반환
-					console.log(k);				
+				let data = new FormData(frm); //frm으로 새로운 데이터객체를 만든다 form의 key/value로 채워진다
+				for (let k of data.entries()) { // data(object)가 ["num", ""]로 쌍에 해당하는 배열을 반환
+					console.log(k);
 				}
 				// 비동기 호출 파일업로드서블릿..
 				$.ajax({
@@ -80,24 +155,55 @@ table {
 					type: 'post',
 					dataType: 'json',
 					data: data,
-					success: function(result) {
-						console.log(result);
-					},
-					error: function(err) {
+					success: createRow,
+					error: function (err) {
 						console.log(err);
 					}
-				});	
+				});
 			});
+
+			// 행추가
+			function createRow(result) {
+				console.log(result);
+				let $delBtn = $('<button />').html('Del');
+				let alink = $('<a />').attr('href', '#').html(result.title);
+				$delBtn.click(delRow);
+				alink.click(linkClickCallBack);
+				let $tr = $('<tr />').append(
+					$('<td />').html(result.num),
+					$('<td />').append(alink),
+					$('<td />').html(result.author),
+					$('<td />').html(result.fileName),
+					$('<td />').html(result.day),
+					$('<td />').append($delBtn)
+				);
+
+				$table.append($tr);
+			}
 			
+			$('#update').click(function() {
+				e.preventDefault(); 
+				e.stopPropagation();
+
+				$.ajax({
+					url:'',
+					data: 'num=' + id,
+					success: function() {
+						
+					},
+					error:function(err) {
+						console.lof(err);
+					}
+				})
+			})
+
 		});
 	</script>
 </head>
 
 <body>
 	<h1>Ajax 파일 업로드</h1>
-	<form id='frm' action='../fileUploadServlet' method='post'
-		enctype='multipart/form-data'>
-		<div id="show"></div>
+	<form id='frm' action='../fileUploadServlet' method='post' enctype='multipart/form-data'>
 		<table border="1">
 			<tr>
 				<td><label for="num">번호</label></td>
@@ -117,10 +223,10 @@ table {
 				<td><input type="file" name="filename" id="filename"></td>
 			</tr>
 			<tr>
-				<td colspan="3"><input type="submit"><input
-					type="reset"></td>
+				<td colspan="3"><input type="submit"><input type="reset"><button id="update">수정</button></td>
 			</tr>
 		</table>
+		<div id="show"></div>
 
 	</form>
 </body>
