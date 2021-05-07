@@ -13,34 +13,18 @@ public class FileDAO {
 	Connection conn;
 	PreparedStatement psmt;
 	ResultSet rs;
-	
-	public void updateFile(FileVO vo) {
-		/*
-		 * Connection conn = DBCon.getConnect(); PreparedStatement psmt = null; String
-		 * sql ="update FILE_BOARD\r\n" + "set author = ?, title= ?, file_name=? \r\n" +
-		 * " where num=?;";
-		 * 
-		 * try { psmt = conn.prepareStatement(sql); psmt.setString(1, );
-		 * psmt.setString(2, ); psmt.setString(3, ); psmt.setInt(4, num); int r
-		 * =psmt.executeUpdate(); System.out.println(r +"건 수정.");
-		 * 
-		 * } catch (SQLException e) { e.printStackTrace(); } finally { if (psmt != null)
-		 * { try { psmt.close(); } catch (SQLException e) { e.printStackTrace(); } } if
-		 * (conn != null) { try { conn.close(); } catch (SQLException e) {
-		 * e.printStackTrace(); } } }
-		 */
-	}
+
 	public void delFile(int num) {
 		Connection conn = DBCon.getConnect();
 		PreparedStatement psmt = null;
-		String sql ="delete from file_board where num=?";
-				
+		String sql = "delete from file_board where num=?";
+
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, num);
-			int r =psmt.executeUpdate();
-			System.out.println(r +"건 삭제.");
-			
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 삭제.");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -68,7 +52,7 @@ public class FileDAO {
 		FileVO file = new FileVO();
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1,num);
+			psmt.setInt(1, num);
 			rs = psmt.executeQuery();
 			if (rs.next()) {
 				file.setAuthor(rs.getString("author"));
@@ -209,6 +193,55 @@ public class FileDAO {
 			}
 		}
 		return file;
+	}
+
+	// 수정
+	public boolean updateFile(FileVO vo) {
+		conn = DBCon.getConnect();
+		PreparedStatement psmt = null;
+		int modifyCnt =0;
+		String sql = "update FILE_BOARD set author = ?, title= ?, file_name=? where num=?";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getAuthor());
+			psmt.setString(2, vo.getTitle());
+			psmt.setString(3, vo.getFilename());
+			psmt.setInt(4, vo.getNum());
+			
+			modifyCnt = psmt.executeUpdate();
+			System.out.println(modifyCnt + "건 수정.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return modifyCnt == 0 ? false : true;
+	}
+	
+	public void close() {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (psmt != null) {
+			try {
+				psmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

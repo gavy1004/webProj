@@ -68,7 +68,25 @@
 					console.log(err);
 				}
 			})
-
+			// delete 
+			function delRow(e) {
+				let id = $(this).parent().parent().children().eq(0).html();
+				let delTr = $(this).parent().parent();
+				e.preventDefault(); // default 기능 차단
+				e.stopPropagation(); // 이벤트 전파 차단
+				$.ajax({
+					url: '../fileDelServlet',
+					data: 'num=' + id,
+					success: function () {
+						//화면삭제
+						delTr.remove();
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			}
+			
 			// linkTag click callback
 			function linkClickCallBack(e) {
 				console.log('a클릭', $(this).parentsUntil('table').eq(0).children().eq(0).html());
@@ -94,25 +112,6 @@
 					},
 					error: function (reject) {
 						console.log(reject);
-					}
-				});
-			}
-
-			// delete 
-			function delRow(e) {
-				let id = $(this).parent().parent().children().eq(0).html();
-				let delTr = $(this).parent().parent();
-				e.preventDefault(); // default 기능 차단
-				e.stopPropagation(); // 이벤트 전파 차단
-				$.ajax({
-					url: '../fileDelServlet',
-					data: 'num=' + id,
-					success: function () {
-						//화면삭제
-						delTr.remove();
-					},
-					error: function (err) {
-						console.log(err);
 					}
 				});
 			}
@@ -162,7 +161,7 @@
 				});
 			});
 
-			// 행추가
+			// 클릭 시 행추가
 			function createRow(result) {
 				console.log(result);
 				let $delBtn = $('<button />').html('Del');
@@ -181,22 +180,37 @@
 				$table.append($tr);
 			}
 			
-			$('#update').click(function() {
-				e.preventDefault(); 
-				e.stopPropagation();
-
+			// 수정버튼 클릭이벤트 
+			$('#modifyBtn').click(function (e) {		
+				e.preventDefault();	
+				let frm = document.getElementById('frm');
+				let data = new FormData(frm);
+				
 				$.ajax({
-					url:'',
-					data: 'num=' + id,
-					success: function() {
-						
+					contentType: false,
+					processData: false,
+					url: '../fileModifyServlet',
+					data: data,
+					type: 'post',
+					dataType:'json',
+					success: function (result) {
+						if(result.retCode == 'Success') {
+							window.alert('정상수정됨');
+							// 화면수정 
+							console.log(result);
+							
+							
+							console.log(data);
+						}else{
+							window.alert('수정예외발생');
+						}
 					},
-					error:function(err) {
-						console.lof(err);
+					error: function (err) {
+						console.log(err);
 					}
 				})
 			})
-
+			
 		});
 	</script>
 </head>
@@ -223,7 +237,11 @@
 				<td><input type="file" name="filename" id="filename"></td>
 			</tr>
 			<tr>
-				<td colspan="3"><input type="submit"><input type="reset"><button id="update">수정</button></td>
+				<td colspan="3">
+					<input type="submit">
+					<input type="reset">
+					<button id="modifyBtn">수정</button>
+				</td>
 			</tr>
 		</table>
 		<div id="show"></div>
